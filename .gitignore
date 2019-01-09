@@ -1,0 +1,16 @@
+# Ignore this
+
+/.settings/
+/.settings/*
+/build/
+*.classpath
+*.project
+/bin/
+/target/
+
+# Keep this
+
+!/src/*
+!.gitignore
+!README.md
+
