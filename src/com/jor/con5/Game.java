@@ -2,12 +2,11 @@
  * Joe O'Regan
  * 
  * Game.java
- * 09/01/2018
+ * 08/01/2018
  * 
  * Connect5
- * Works with text and graphics based 5 in row games
+ * Text and graphics based 5 in a row games
  */
-
 package com.jor.con5;
 
 public class Game {

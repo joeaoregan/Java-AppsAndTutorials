@@ -1,14 +1,17 @@
 /*
  * Joe O'Regan
+ * 
+ * Connect5Text.java
  * 09/01/2018
+ * 
  * Connect5
- * Text based 5 in row game
+ * Text based 5 in row a game
  */
 package com.jor.con5;
 
 import java.util.Scanner;
 
-public class Connect5 {
+public class Connect5Text {
 
 	private static Game game;
 	private static Scanner sc = new Scanner(System.in);
@@ -16,7 +19,7 @@ public class Connect5 {
 	private static char continueGame;
 	private static int lastPlayer;
 
-	public Connect5() {
+	public Connect5Text() {
 		game = new Game();
 		continueGame = 'y';
 	}
@@ -31,7 +34,7 @@ public class Connect5 {
 	}
 
 	public static void main(String[] args) throws InterruptedException {
-		new Connect5();
+		new Connect5Text();
 
 		while (Character.toLowerCase(continueGame) != 'n') {
 			System.out.println("CONNECT 5 by Joe O'Regan\n");
