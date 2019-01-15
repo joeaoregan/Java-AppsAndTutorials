@@ -1,9 +1,13 @@
 /*
  * Joe O'Regan
+ * 
+ * Game.java
  * 09/01/2018
+ * 
  * Connect5
- * Text based 5 in row game
+ * Works with text and graphics based 5 in row games
  */
+
 package com.jor.con5;
 
 public class Game {
@@ -32,6 +36,9 @@ public class Game {
 		this.player = player;
 	}
 
+	/*
+	 * Game constructor
+	 */
 	public Game() {
 		player = 1;
 		board = new int[Var.ROWS][Var.COLS];
@@ -40,6 +47,9 @@ public class Game {
 		setBoard(winBoard);
 	}
 
+	/*
+	 * Print the game board to the console window
+	 */
 	public void displayBoard(int[][] board) {
 		for (int i = 1; i < 10; i++) {
 			System.out.print(i + " ");
@@ -55,6 +65,9 @@ public class Game {
 		}
 	}
 
+	/*
+	 * Set all board cells to 0
+	 */
 	public void setBoard(int[][] board) {
 		for (int row = 0; row < Var.ROWS; row++) {
 			for (int col = 0; col < Var.COLS; col++) {
@@ -63,6 +76,9 @@ public class Game {
 		}
 	}
 
+	/*
+	 * Check for 5 in a row diagonal, horizontal, and vertical, and highlight the winning move if winner found
+	 */
 	public void checkWin() {
 		for (int row = 0; row <= Var.ROWS - Var.CONNECT; row++) {
 			// Diagonal /
@@ -117,8 +133,11 @@ public class Game {
 		}
 	}
 
+	/*
+	 * If the column is not full, add the move to the game board
+	 */
 	public void checkCol(int col) {
-		if (board[0][col] != 0) {
+		if (board[0][col] != 0) { // top row full
 			System.out.println("\nERROR: Column " + col + " is full\n");
 			player = (player == Var.PLAYER_1) ? Var.PLAYER_2 : Var.PLAYER_1;
 		}
@@ -131,6 +150,9 @@ public class Game {
 		}
 	}
 
+	/*
+	 * Highlight the winning 5 in a row
+	 */
 	public void show5InARow() {
 		for (int i = 0; i < 10; i += 2) {
 			winBoard[fiveInARow[i]][fiveInARow[i + 1]] = 1; // Highlight winning line
