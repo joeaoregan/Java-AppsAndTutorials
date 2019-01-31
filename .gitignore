@@ -1,0 +1,14 @@
+# Joe O'Regan
+# 31/01/2019
+
+# Ignore this
+
+.settings
+/bin/
+.classpath
+.project
+
+# Keep this
+
+!/images/
+!/src/
