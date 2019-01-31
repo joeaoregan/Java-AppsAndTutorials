@@ -2,7 +2,7 @@
  * http://cs.lmu.edu/~ray/notes/javanetexamples/
  * 30/01/2019
  */
-package com.sock.tictatctoe;
+package com.sock.tictactoe_gui;
 
 import java.awt.Color;
 import java.awt.GridLayout;

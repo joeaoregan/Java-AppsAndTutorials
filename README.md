@@ -8,7 +8,8 @@ Simple Java Client / Server Apps
 * Capital
 * Chat
 * Date
-* Tic Tac Toe
+* Tic Tac Toe (Java AWT)
+* Tic Tac Toe (Console)
 
 
 ### Links / References

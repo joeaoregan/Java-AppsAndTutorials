@@ -1,3 +1,7 @@
+/*
+ * http://cs.lmu.edu/~ray/notes/javanetexamples/
+ * 30/01/2019
+ */
 package com.sock.chat;
 
 import java.awt.event.ActionEvent;

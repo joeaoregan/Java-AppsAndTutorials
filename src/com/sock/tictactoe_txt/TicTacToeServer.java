@@ -2,7 +2,7 @@
  * http://cs.lmu.edu/~ray/notes/javanetexamples/
  * 30/01/2019
  */
-package com.sock.tictatctoe;
+package com.sock.tictactoe_txt;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,6 +10,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+
+import java.net.InetAddress;
 
 /**
  * A server for a network multi-player tic tac toe game. Modified and extended from
@@ -32,8 +34,14 @@ import java.net.Socket;
  * A second change is that it allows an unlimited number of pairs of players to play.
  */
 public class TicTacToeServer {
+    private static int PORT = 8000;
+    
     public static void main(String[] args) throws Exception {
-        try (ServerSocket listener = new ServerSocket(8901)) {
+    	int portNumber = (args.length == 0) ? PORT : Integer.parseInt(args[0]);
+        InetAddress inetAddress = InetAddress.getLocalHost();
+    	
+        try (ServerSocket listener = new ServerSocket(portNumber)) {
+        	System.out.println("Host: " + inetAddress.getHostName() + ", IP Address: " + inetAddress.getHostAddress() + ", Port: " + portNumber);
             System.out.println("Tic Tac Toe Server is Running");
             while (true) {
                 Game game = new Game();
@@ -134,7 +142,7 @@ class Game {
 
         public void otherPlayerMoved(int location) {
             output.println("OPPONENT_MOVED " + location);
-            output.println(hasWinner() ? "DEFEAT" : boardFilledUp() ? "TIE" : "");
+            output.println(hasWinner() ? "DEFEAT" : boardFilledUp() ? "TIE" : "CONTINUE");
         }
 
         public void run() {
