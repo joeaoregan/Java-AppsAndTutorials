@@ -7,6 +7,7 @@ Simple Java Client / Server Apps
 
 * Capital
 * Chat
+* Connect 5 (Console)
 * Date
 * Tic Tac Toe (Java AWT)
 * Tic Tac Toe (Console)

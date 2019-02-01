@@ -72,7 +72,7 @@ class Game {
 
     Player currentPlayer;
 
-    public boolean hasWinner() {
+    public boolean checkWin() {
         return
             (board[0] != null && board[0] == board[1] && board[0] == board[2])
           ||(board[3] != null && board[3] == board[4] && board[3] == board[5])
@@ -142,7 +142,7 @@ class Game {
 
         public void otherPlayerMoved(int location) {
             output.println("OPPONENT_MOVED " + location);
-            output.println(hasWinner() ? "DEFEAT" : boardFilledUp() ? "TIE" : "CONTINUE");
+            output.println(checkWin() ? "DEFEAT" : boardFilledUp() ? "TIE" : "CONTINUE");
         }
 
         public void run() {
@@ -163,7 +163,7 @@ class Game {
                         
                         if (legalMove(location, this)) {
                             output.println("VALID_MOVE");
-                            output.println(hasWinner() ? "VICTORY" : boardFilledUp() ? "TIE" : "");
+                            output.println(checkWin() ? "VICTORY" : boardFilledUp() ? "TIE" : "");
                         } else {
                             output.println("MESSAGE ?");
                         }
