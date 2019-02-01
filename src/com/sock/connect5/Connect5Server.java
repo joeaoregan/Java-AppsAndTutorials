@@ -23,7 +23,7 @@ public class Connect5Server {
         InetAddress inetAddress = InetAddress.getLocalHost();
     	
         try (ServerSocket listener = new ServerSocket(portNumber)) {
-        	System.out.println("Connect5 Server Running On Host: " + inetAddress.getHostName() + ", IP Address: " + inetAddress.getHostAddress() + ", Port: " + portNumber);
+        	System.out.println("Connect5 Server Running\nOS: \t\t" + System.getProperty("os.name") + ", \nHost: \t\t" + inetAddress.getHostName() + ", \nIP Address: \t" + inetAddress.getHostAddress() + ", \nPort: \t\t" + portNumber);
             
             while (true) {
                 Game game = new Game();

@@ -6,6 +6,7 @@
 package com.sock.connect5;
 
 import java.io.BufferedReader;
+import java.io.Console;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -140,8 +141,18 @@ public class Connect5Client {
 			System.out.println();
 		}
     }
+    
+    private static String os = null;
+    public static String getOS() {
+    	if (os == null) {
+    		os = System.getProperty("os.name");
+    	}
+    	return os;
+    }
 
     public static void main(String[] args) throws Exception {
+    	System.out.println("Connect 5 by Joe O'Regan running on " + getOS() + "");
+        
         while (true) {
             String serverAddress = (args.length == 0) ? "localhost" : args[0];
             Connect5Client client = new Connect5Client(serverAddress, (args.length == 2) ? Integer.parseInt(args[1]) : PORT);            
