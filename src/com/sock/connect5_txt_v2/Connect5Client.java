@@ -14,7 +14,7 @@ import java.util.Scanner;
 public class Connect5Client {
 	private Board board = new Board(Game.ROWS, Game.COLS);
 	private Scanner sc = new Scanner(System.in);
-	private int playerIcon, opponentIcon, validMove = 0;
+	private int playerIcon, opponentIcon, validMove = 0, player;
 	private static int PORT = 8000;
 	private Socket socket;
 	private BufferedReader in;
@@ -34,39 +34,43 @@ public class Connect5Client {
 			response = in.readLine();
 
 			if (response.startsWith("WELCOME")) {
-				int mark = Integer.parseInt(String.valueOf(response.charAt(8))); // Return PLAYER_1 or PLAYER_2
-				playerIcon = (Integer.parseInt(String.valueOf(mark)) == Game.PLAYER_1) ? Game.PLAYER_1 : Game.PLAYER_2;
+				player = Integer.parseInt(String.valueOf(response.charAt(8))); // Return PLAYER_1 or PLAYER_2
+				playerIcon = (Integer.parseInt(String.valueOf(player)) == Game.PLAYER_1) ? Game.PLAYER_1
+						: Game.PLAYER_2;
 				opponentIcon = (playerIcon == Game.PLAYER_1) ? Game.PLAYER_2 : Game.PLAYER_1; // opposite of player
-				System.out.println("Connect 5 - Player " + mark);
+				System.out.println("Connect 5 - Player " + player);
 			}
 
 			while (true) {
 				response = in.readLine();
-
+				 				
 				if (response.startsWith("VALID_MOVE")) {
-					board.setCol(validMove, playerIcon);
-					board.draw();
-					System.out.println("Valid move, please wait");
+				    //System.out.flush();
+				    //Runtime.getRuntime().exec("cls");
+					board.setCol(validMove, playerIcon);	// Player moves
+					System.out.println("\nValid move, please wait");
 				} else if (response.startsWith("OPPONENT_MOVED")) {
+				    //System.out.flush();
+				    //Runtime.getRuntime().exec("cls");
 					int loc = Integer.parseInt(response.substring(15));
-					board.setCol(loc, opponentIcon);
-					board.draw();
-					System.out.println("Opponent moved, your turn");
+					board.setCol(loc, opponentIcon);	// Opponent moves
+					System.out.println("\nPlayer " + ((player == 1) ? Game.PLAYER_2 : Game.PLAYER_1) + " Moved");
 				} else if (response.startsWith("VICTORY")) {
 					System.out.println("You win");
+					board.win();
 					break;
 				} else if (response.startsWith("DEFEAT")) {
 					System.out.println("You lose");
+					board.win();
 					break;
 				} else if (response.startsWith("TIE")) {
-					System.out.println("You tied");
 					break;
 				} else if (response.startsWith("MESSAGE")) {
 					System.out.println(response.substring(8));
 				}
 
 				if (response.startsWith("CONTINUE") || response.toLowerCase().contains("your move")
-						|| response.toLowerCase().contains("?")) { // player move, or returned invalid move
+						|| response.toLowerCase().contains("?")) { // start game, player move, or returned invalid move
 					playerMove();
 				}
 			}
@@ -79,7 +83,7 @@ public class Connect5Client {
 
 	private void playerMove() {
 		board.draw();
-		System.out.print("Select a column (0 - 8): ");
+		System.out.print("\nSelect a column (0 - 8): ");
 		int move = sc.nextInt();
 		validMove = move;
 		out.println("MOVE " + (move));
