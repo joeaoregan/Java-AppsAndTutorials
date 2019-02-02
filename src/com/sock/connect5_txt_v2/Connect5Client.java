@@ -12,7 +12,7 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class Connect5Client {
-	private int[][] board = new int[Game.ROWS][Game.COLS];
+	private Board board = new Board(Game.ROWS, Game.COLS);
 	private Scanner sc = new Scanner(System.in);
 	private int playerIcon, opponentIcon, validMove = 0;
 	private static int PORT = 8000;
@@ -29,7 +29,6 @@ public class Connect5Client {
 
 	public void play() throws Exception {
 		String response;
-		Game.init(new int[][][] { board });
 
 		try {
 			response = in.readLine();
@@ -37,8 +36,7 @@ public class Connect5Client {
 			if (response.startsWith("WELCOME")) {
 				int mark = Integer.parseInt(String.valueOf(response.charAt(8))); // Return PLAYER_1 or PLAYER_2
 				playerIcon = (Integer.parseInt(String.valueOf(mark)) == Game.PLAYER_1) ? Game.PLAYER_1 : Game.PLAYER_2;
-				opponentIcon = (playerIcon == Game.PLAYER_1) ? Game.PLAYER_2 : Game.PLAYER_1; // opponent opposite of
-																								// player
+				opponentIcon = (playerIcon == Game.PLAYER_1) ? Game.PLAYER_2 : Game.PLAYER_1; // opposite of player
 				System.out.println("Connect 5 - Player " + mark);
 			}
 
@@ -46,12 +44,13 @@ public class Connect5Client {
 				response = in.readLine();
 
 				if (response.startsWith("VALID_MOVE")) {
-					Game.setCol(validMove, playerIcon, board); // Player move
-					Game.displayBoard(board);
+					board.setCol(validMove, playerIcon);
+					board.draw();
 					System.out.println("Valid move, please wait");
 				} else if (response.startsWith("OPPONENT_MOVED")) {
 					int loc = Integer.parseInt(response.substring(15));
-					Game.setCol(loc, opponentIcon, board); // Opponent move
+					board.setCol(loc, opponentIcon);
+					board.draw();
 					System.out.println("Opponent moved, your turn");
 				} else if (response.startsWith("VICTORY")) {
 					System.out.println("You win");
@@ -79,8 +78,8 @@ public class Connect5Client {
 	}
 
 	private void playerMove() {
-		Game.displayBoard(board);
-		System.out.print("Select a column (0-8): ");
+		board.draw();
+		System.out.print("Select a column (0 - 8): ");
 		int move = sc.nextInt();
 		validMove = move;
 		out.println("MOVE " + (move));

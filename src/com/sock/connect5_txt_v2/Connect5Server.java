@@ -22,13 +22,15 @@ public class Connect5Server {
 
 			while (true) {
 				Game game = new Game();
-				game.initBoard();
-
+				
 				Player player1 = new Player(listener.accept(), Game.PLAYER_1, game);
 				Player player2 = new Player(listener.accept(), Game.PLAYER_2, game);
+				
 				player1.setOpponent(player2);
 				player2.setOpponent(player1);
+				
 				game.setCurrentPlayer(player1);
+				
 				player1.start();
 				player2.start();
 			}

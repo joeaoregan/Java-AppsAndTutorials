@@ -18,14 +18,13 @@ class Player extends Thread {
 	private BufferedReader input;
 	private PrintWriter output;
 	private Game game;
-	// private int[][] board = new int[Game.ROWS][Game.COLS];
-
-	// public int[][] getBoard() {
-	// return board;
-	// }
 
 	public Player getOpponent() {
 		return opponent;
+	}
+
+	public void setOpponent(Player opponent) {
+		this.opponent = opponent;
 	}
 
 	public int getType() {
@@ -37,9 +36,6 @@ class Player extends Thread {
 		this.type = type;
 		this.game = game;
 
-		// Game.init(new int[][][] {board});
-		// game.initBoard();
-
 		try {
 			input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			output = new PrintWriter(socket.getOutputStream(), true);
@@ -50,15 +46,10 @@ class Player extends Thread {
 		}
 	}
 
-	public void setOpponent(Player opponent) {
-		this.opponent = opponent;
-	}
-
 	public void otherPlayerMoved(int location) {
-		// System.out.println("Other Player Moved");
+		System.out.println("Player " + ((type == Game.PLAYER_1) ? Game.PLAYER_2 : Game.PLAYER_1) + " Has Moved");
 		output.println("OPPONENT_MOVED " + location);
-		output.println(
-				Game.checkWin(game.getBoard()) ? "DEFEAT" : Game.boardFull(game.getBoard()) ? "TIE" : "CONTINUE");
+		output.println((game.getBoard().win()) ? "DEFEAT" : game.getBoard().full() ? "TIE" : "CONTINUE");
 	}
 
 	public void run() {
@@ -79,8 +70,7 @@ class Player extends Thread {
 
 					if (game.legalMove(location, this, game)) {
 						output.println("VALID_MOVE");
-						output.println(Game.checkWin(game.getBoard()) ? "VICTORY"
-								: Game.boardFull(game.getBoard()) ? "TIE" : "");
+						output.println((game.getBoard().win()) ? "VICTORY" : game.getBoard().full() ? "TIE" : "");
 					} else {
 						output.println("MESSAGE ?");
 					}
