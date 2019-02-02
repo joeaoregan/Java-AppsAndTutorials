@@ -35,11 +35,9 @@ public class Game {
 	 * Game constructor
 	 */
 	public Game() {
-		player = 1;
+		player = Var.PLAYER_1;
 		board = new int[Var.ROWS][Var.COLS];
 		winBoard = new int[Var.ROWS][Var.COLS];
-		//setBoard(board);
-		//setBoard(winBoard);
 		setBoard(new int[][][] {board, winBoard});
 	}
 
@@ -64,15 +62,6 @@ public class Game {
 	/*
 	 * Set all board cells to 0
 	 */
-	/*
-	public void setBoard(int[][] board) {
-		for (int row = 0; row < Var.ROWS; row++) {
-			for (int col = 0; col < Var.COLS; col++) {
-				board[row][col] = 0;
-			}
-		}
-	}
-	*/
 	public void setBoard(int[][][] board) {
 		for (int i = 0; i < board.length; i++) {
 			for (int row = 0; row < Var.ROWS; row++) {

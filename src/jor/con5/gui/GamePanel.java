@@ -179,7 +179,6 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
 
 					this.win = false;
 					game.setGameOver(this.win);
-					//game.setBoard(game.winBoard);	// reset connect 5 display winner
 					game.setBoard(new int[][][] {game.winBoard});
 
 					repaint();
