@@ -5,9 +5,9 @@
  * 09/01/2018
  * 
  * Connect5
- * Text and graphics based 5 in a row games
+ * Graphics based 5 in a row game
  */
-package com.jor.con5;
+package jor.con5.gui;
 
 public class Var {
 	// Text Game

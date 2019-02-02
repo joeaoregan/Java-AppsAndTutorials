@@ -7,7 +7,7 @@
  * Connect5
  * Graphics based 5 in a row game
  */
-package com.jor.con5;
+package jor.con5.gui;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;

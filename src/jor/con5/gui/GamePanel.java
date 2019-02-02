@@ -7,7 +7,7 @@
  * Connect5
  * Text and graphics based 5 in a row games
  */
-package com.jor.con5;
+package jor.con5.gui;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -179,7 +179,8 @@ public class GamePanel extends JPanel implements MouseListener, MouseMotionListe
 
 					this.win = false;
 					game.setGameOver(this.win);
-					game.setBoard(game.winBoard);	// reset connect 5 display winner
+					//game.setBoard(game.winBoard);	// reset connect 5 display winner
+					game.setBoard(new int[][][] {game.winBoard});
 
 					repaint();
 				}

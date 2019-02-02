@@ -7,16 +7,12 @@
  * Connect5
  * Text and graphics based 5 in a row games
  */
-package com.jor.con5;
+package jor.con5.gui;
 
 public class Game {
-	public int[][] board;
-	public int[][] winBoard;
-
+	public int[][] board, winBoard;
 	private int player;
-
 	private boolean gameOver;
-
 	public int[] fiveInARow = new int[10];
 
 	public boolean getGameOver() {
@@ -42,8 +38,9 @@ public class Game {
 		player = 1;
 		board = new int[Var.ROWS][Var.COLS];
 		winBoard = new int[Var.ROWS][Var.COLS];
-		setBoard(board);
-		setBoard(winBoard);
+		//setBoard(board);
+		//setBoard(winBoard);
+		setBoard(new int[][][] {board, winBoard});
 	}
 
 	/*
@@ -67,6 +64,7 @@ public class Game {
 	/*
 	 * Set all board cells to 0
 	 */
+	/*
 	public void setBoard(int[][] board) {
 		for (int row = 0; row < Var.ROWS; row++) {
 			for (int col = 0; col < Var.COLS; col++) {
@@ -74,9 +72,20 @@ public class Game {
 			}
 		}
 	}
+	*/
+	public void setBoard(int[][][] board) {
+		for (int i = 0; i < board.length; i++) {
+			for (int row = 0; row < Var.ROWS; row++) {
+				for (int col = 0; col < Var.COLS; col++) {
+					board[i][row][col] = 0;
+				}
+			}
+		}
+	}
 
 	/*
-	 * Check for 5 in a row diagonal, horizontal, and vertical, and highlight the winning move if winner found
+	 * Check for 5 in a row diagonal, horizontal, and vertical, and highlight the
+	 * winning move if winner found
 	 */
 	public void checkWin() {
 		for (int row = 0; row <= Var.ROWS - Var.CONNECT; row++) {

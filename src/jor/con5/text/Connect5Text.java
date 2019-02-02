@@ -7,7 +7,7 @@
  * Connect5
  * Text based 5 in row a game
  */
-package com.jor.con5;
+package jor.con5.text;
 
 import java.util.Scanner;
 
