@@ -82,7 +82,6 @@ public class ChatServer {
          */
         public void run() {
             try {
-
                 // Create character streams for the socket.
                 in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 out = new PrintWriter(socket.getOutputStream(), true);

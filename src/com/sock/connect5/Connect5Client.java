@@ -6,7 +6,6 @@
 package com.sock.connect5;
 
 import java.io.BufferedReader;
-import java.io.Console;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -45,12 +44,9 @@ public class Connect5Client {
             response = in.readLine();
             
             if (response.startsWith("WELCOME")) {
-                int mark = Integer.parseInt(String.valueOf(response.charAt(8)));	// Return PLAYER_1 or PLAYER_2                
-                //System.out.println("test --------- " + String.valueOf(response.charAt(8)));                
+                int mark = Integer.parseInt(String.valueOf(response.charAt(8)));	// Return PLAYER_1 or PLAYER_2   
                 playerIcon = (Integer.parseInt(String.valueOf(mark)) == PLAYER_1) ? PLAYER_1 : PLAYER_2;
-                //System.out.println("test player --------- " + playerIcon);
                 opponentIcon = (playerIcon == PLAYER_1) ? PLAYER_2 : PLAYER_1;	// opponent opposite of player
-               // System.out.println("test opponent --------- " + opponentIcon);
                 System.out.println("Connect 5 - Player " + mark);
             }
             
