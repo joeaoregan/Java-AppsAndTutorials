@@ -3,7 +3,7 @@
  * Joe O'Regan
  * 31/01/2019
  */
-package com.sock.connect5;
+package com.sock.connect5_txt;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
