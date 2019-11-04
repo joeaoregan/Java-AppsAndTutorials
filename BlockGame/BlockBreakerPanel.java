@@ -13,6 +13,8 @@ public class BlockBreakerPanel extends JPanel implements KeyListener{
 	Thread thread;
 	Animate animate;
 	int size=25;
+	int score=0;
+	Boolean gameStarted=false;
 
 	BlockBreakerPanel(){
 		paddle=new Block(175,480,150,25,"paddle.png");
@@ -46,6 +48,14 @@ public class BlockBreakerPanel extends JPanel implements KeyListener{
 			p.draw(g,this);
 		}
 		paddle.draw(g, this);
+
+		g.drawString("Score: "+score, 10, getHeight()-10);	// Score
+
+		if(!gameStarted){
+			String pressEnter="Press Enter To Begin";
+			int textWidth=g.getFontMetrics().stringWidth(pressEnter);
+			g.drawString(pressEnter, (getWidth()/2)-(textWidth/2), getHeight()-10);	// Start Game
+		}
 	}
 
 	public void update(){
@@ -53,6 +63,7 @@ public class BlockBreakerPanel extends JPanel implements KeyListener{
 			p.y+=1;	// drop powerup
 			if(p.intersects(paddle)&& !p.destroyed){
 				p.destroyed=true;
+				score+=25;
 				ball.add(new Block(paddle.dx+75,437,25,25,"ball.png"));
 			}
 		}
@@ -76,6 +87,7 @@ public class BlockBreakerPanel extends JPanel implements KeyListener{
 					}
 				}else if(ba.intersects(b) && !b.destroyed){
 					b.destroyed=true;
+					score+=10;
 					ba.dy*=-1;
 					if(b.powerup){
 						powerup.add(new Block(b.x,b.y,25,19,"extra.png"));
@@ -97,6 +109,7 @@ public class BlockBreakerPanel extends JPanel implements KeyListener{
 			animate=new Animate(this);
 			thread=new Thread(animate);
 			thread.start();
+			gameStarted=true;
 		}
 		if(e.getKeyCode()==KeyEvent.VK_LEFT && paddle.x>0){
 			paddle.x-=15;
