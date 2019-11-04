@@ -17,6 +17,7 @@ Simple Java Client / Server Apps
 * Tic Tac Toe (Java AWT)
 * Tic Tac Toe (Console)
 * Block Game (Breakout Type Game)
+* Flappy Bird
 
 ---
 
