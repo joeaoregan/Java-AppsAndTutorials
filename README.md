@@ -16,6 +16,7 @@ Simple Java Client / Server Apps
 * Date
 * Tic Tac Toe (Java AWT)
 * Tic Tac Toe (Console)
+* Block Game (Breakout Type Game)
 
 ---
 
