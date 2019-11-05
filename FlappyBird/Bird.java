@@ -1,3 +1,4 @@
+import java.net.URL;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -6,6 +7,7 @@ import java.awt.Toolkit;
 import java.util.Random;
 
 public class Bird extends Rectangle{
+	private static final long serialVersionUID = 1L;
 	public static final int WIDTH=28;
 	public static final int HEIGHT=20;
 	Image pic;
@@ -14,14 +16,16 @@ public class Bird extends Rectangle{
 
 	Random random=new Random();
 
-	Bird(int a, int b, int w, int h, String s){
+	Bird(int a, int b, int w, int h){
 		yMotion=0;
 		alive=true;
 		x=a;
 		y=b;
 		width=w;
 		height=h;
-		pic=Toolkit.getDefaultToolkit().getImage(s);
+
+		URL url = getClass().getResource("/flappy.png");
+		pic=Toolkit.getDefaultToolkit().getImage(url);
 	}
 
 	public void move(){

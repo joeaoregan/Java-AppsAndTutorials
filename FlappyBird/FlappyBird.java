@@ -8,15 +8,15 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.Font;
 import javax.swing.JPanel;
-import java.awt.Rectangle;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 import java.util.ArrayList;
 import java.util.Random;
 
 public class FlappyBird extends JPanel implements ActionListener,MouseListener,KeyListener{
-	SoundEffect flapFX = new SoundEffect("flap.wav");
-	SoundEffect crashFX = new SoundEffect("sadwah.wav");
+	private static final long serialVersionUID = 1L;
+	SoundEffect flapFX = new SoundEffect("/flap.wav");
+	SoundEffect crashFX = new SoundEffect("/sadwah.wav");
 
 	public static FlappyBird flappyBird;
 
@@ -61,7 +61,7 @@ public class FlappyBird extends JPanel implements ActionListener,MouseListener,K
 		jframe.setResizable(false);
 		jframe.setVisible(true);
 
-		bird=new Bird(WIDTH/2-Bird.WIDTH/2,HEIGHT/2-Bird.HEIGHT/2,Bird.WIDTH,Bird.HEIGHT,"flappy.png");
+		bird=new Bird(WIDTH/2-Bird.WIDTH/2,HEIGHT/2-Bird.HEIGHT/2,Bird.WIDTH,Bird.HEIGHT);
 		pipes=new ArrayList<Pipe>();
 
 		addPipe(true);
@@ -145,7 +145,7 @@ public class FlappyBird extends JPanel implements ActionListener,MouseListener,K
 	public void jump(){
 		//Restart Game
 		if(gameOver){
-			bird=new Bird(WIDTH/2-Bird.WIDTH/2,HEIGHT/2-Bird.HEIGHT/2,Bird.WIDTH,Bird.HEIGHT,"flappy.png");
+			bird=new Bird(WIDTH/2-Bird.WIDTH/2,HEIGHT/2-Bird.HEIGHT/2,Bird.WIDTH,Bird.HEIGHT);
 			playCrash=true;
 			pipes.clear();
 			bird.yMotion=0;
