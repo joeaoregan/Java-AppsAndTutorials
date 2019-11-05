@@ -6,71 +6,39 @@ import java.awt.Toolkit;
 import java.util.Random;
 
 public class Pipe extends Rectangle{
-	final int PIPE_WIDTH=100, PIPE_HEIGHT=500;
+	final static int WIDTH=100, HEIGHT=500, SPEED=10;
 	Image pic;
-	private boolean alive;
+	private boolean bottomPipe;
 
 	Random random=new Random();
-/*
-	Pipe(int a, int b, int h){
-		alive=true;
+
+	Pipe(int a, int b, boolean bottomPipe){
+		this.bottomPipe=bottomPipe;
 		x=a;
 		y=b;
-		width=PIPE_WIDTH;
-		height=PIPE_HEIGHT;
-		pic=Toolkit.getDefaultToolkit().getImage("pipe_bottom.png");
-		//pic2=Toolkit.getDefaultToolkit().getImage("pipe2.png");
+		width=WIDTH;
+		height=HEIGHT;
+
+		if(bottomPipe){
+			pic=Toolkit.getDefaultToolkit().getImage("pipe_bottom.png");
+		}else{
+			pic=Toolkit.getDefaultToolkit().getImage("pipe_top.png");
+		}
 	}
 
-	Pipe(int a, int b, int h, boolean alive){
-		this.alive=alive;
-		x=a;
-		y=b;
-		width=PIPE_WIDTH;
-		height=h;
-		pic2=Toolkit.getDefaultToolkit().getImage("pipe_top.png");
-	}
-	*/
-	Pipe(int a, int b){
-		alive=true;
-		x=a;
-		y=b;
-		width=PIPE_WIDTH;
-		height=PIPE_HEIGHT;
-		pic=Toolkit.getDefaultToolkit().getImage("pipe_bottom.png");
-		//pic2=Toolkit.getDefaultToolkit().getImage("pipe2.png");
+	public void move(){
+		x-=SPEED;
 	}
 
-	Pipe(int a, int b, boolean alive){
-		this.alive=alive;
-		x=a;
-		y=b;
-		width=PIPE_WIDTH;
-		height=PIPE_HEIGHT;
-		if(alive)
-		pic=Toolkit.getDefaultToolkit().getImage("pipe_bottom.png");
-		else
-		pic=Toolkit.getDefaultToolkit().getImage("pipe_top.png");
+	public boolean getBottomPipe(){
+		return bottomPipe;
 	}
 
-	public boolean getAlive(){
-		return alive;
-	}
-
-	public void setAlive(boolean alive){
-		this.alive=alive;
+	public void setBottomPipe(boolean bottomPipe){
+		this.bottomPipe=bottomPipe;
 	}
 
 	public void draw(Graphics g, Component c){
-		//if(alive){
-			g.drawImage(pic,x,y,width,height,c);
-		//}
-		/*
-		else{
-			//g.drawImage(pic,x, height, width, y, x, y, width, height, c);
-			g.drawImage(pic2,x,y,width,height,c);
-		}
-*/
-
+		g.drawImage(pic,x,y,width,height,c);
 	}
 }
