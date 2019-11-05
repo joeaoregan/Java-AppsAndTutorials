@@ -33,7 +33,7 @@ public class FlappyBird extends JPanel implements ActionListener,MouseListener,K
 
 	public int ticks, yMotion, score;
 
-	public ArrayList<Rectangle> columns;
+	public ArrayList<Pipe> columns;
 
 	public Random rand;
 
@@ -59,7 +59,7 @@ public class FlappyBird extends JPanel implements ActionListener,MouseListener,K
 		jframe.setVisible(true);
 
 		bird=new Bird(WIDTH/2-BIRD_WIDTH/2,HEIGHT/2-BIRD_HEIGHT/2,BIRD_WIDTH,BIRD_HEIGHT,"flappy.png");
-		columns=new ArrayList<Rectangle>();
+		columns=new ArrayList<Pipe>();
 
 		addColumn(true);
 		addColumn(true);
@@ -75,7 +75,7 @@ public class FlappyBird extends JPanel implements ActionListener,MouseListener,K
 
 		if(started) {
 			for(int i=0;i<columns.size();i++){
-				Rectangle column = columns.get(i);
+				Pipe column = columns.get(i);
 				column.x-=COLUMN_SPEED;
 			}
 
@@ -84,21 +84,22 @@ public class FlappyBird extends JPanel implements ActionListener,MouseListener,K
 			}
 
 			for(int i=0;i<columns.size();i++){
-				Rectangle column = columns.get(i);
+				Pipe column = columns.get(i);
 
 				if(column.x + column.width < 0){
 					columns.remove(column);
 
-					if(column.y ==0){
+					//if(column.y == 0){
 						addColumn(false);
-					}
+					//}
 				}
 			}
 
 			bird.y+=yMotion;
 
-			for(Rectangle column:columns){
-				if(column.y==0 && bird.x+bird.width/2>column.x+column.width/2-10 && bird.x+bird.width/2<column.x+column.width/2+10){
+			for(Pipe column:columns){
+				//if(column.y==0 && bird.x+bird.width/2>column.x+column.width/2-10 && bird.x+bird.width/2<column.x+column.width/2+10){
+				if(column.getAlive() && bird.x+bird.width/2>column.x+column.width/2-10 && bird.x+bird.width/2<column.x+column.width/2+10){
 					score++;
 				}
 				if(column.intersects(bird)){
@@ -137,14 +138,23 @@ public class FlappyBird extends JPanel implements ActionListener,MouseListener,K
 	public void addColumn(boolean start){
 		int space=300;
 		int width=100;
-		int height=50+rand.nextInt(300);
+		//int height=50+rand.nextInt(300);
+		int startY=100+rand.nextInt(300);
+
+		int distance=(rand.nextInt(7)*25)+150;
+
+
 
 		if(start){
-			columns.add(new Rectangle(WIDTH+width+columns.size() * 300, HEIGHT-height-GROUND_HEIGHT, width, height));
-			columns.add(new Rectangle(WIDTH+width+(columns.size()-1)*300,0,width,HEIGHT-height-space));
+			//columns.add(new Pipe(WIDTH+width+columns.size() * 300,		HEIGHT-height-GROUND_HEIGHT,	height));
+			//columns.add(new Pipe(WIDTH+width+(columns.size()-1)*300,	0,								HEIGHT-height-space,false));
+			columns.add(new Pipe(WIDTH+width+columns.size() * 300,-startY+HEIGHT-GROUND_HEIGHT));
+			columns.add(new Pipe(WIDTH+width+(columns.size()-1)*300,-startY,false));
 		} else{
-			columns.add(new Rectangle(columns.get(columns.size()-1).x+600, HEIGHT-height-GROUND_HEIGHT,width,height));
-			columns.add(new Rectangle(columns.get(columns.size()-1).x,0,width,HEIGHT-height-space));
+			//columns.add(new Pipe(columns.get(columns.size()-1).x+600, HEIGHT-height-GROUND_HEIGHT,height));
+			//columns.add(new Pipe(columns.get(columns.size()-1).x,0,HEIGHT-height-space,false));
+			columns.add(new Pipe(columns.get(columns.size()-1).x+300+distance, -startY+HEIGHT-GROUND_HEIGHT));
+			columns.add(new Pipe(columns.get(columns.size()-1).x, -startY,false)); // top
 		}
 	}
 
@@ -185,19 +195,20 @@ public class FlappyBird extends JPanel implements ActionListener,MouseListener,K
 		g.setColor(Color.cyan);
 		g.fillRect(0,0,WIDTH,HEIGHT);
 
+		//g.setColor(Color.red);
+		//g.fillRect(bird.x,bird.y,bird.width,bird.height);
+		bird.draw(g, this);
+
+		for(Pipe column:columns){
+			//paintColumn(g,column);
+			column.draw(g,this);
+		}
+
 		g.setColor(Color.orange);
 		g.fillRect(0,HEIGHT-GROUND_HEIGHT,WIDTH,GROUND_HEIGHT);
 
 		g.setColor(Color.green);
 		g.fillRect(0,HEIGHT-GROUND_HEIGHT,WIDTH,20);
-
-		//g.setColor(Color.red);
-		//g.fillRect(bird.x,bird.y,bird.width,bird.height);
-		bird.draw(g, this);
-
-		for(Rectangle column:columns){
-			paintColumn(g,column);
-		}
 
 		g.setColor(Color.white);
 		g.setFont(new Font("Arial", 1, 100));
