@@ -20,6 +20,8 @@ public class FlappyBird extends JPanel implements ActionListener,MouseListener,K
 
 	public static FlappyBird flappyBird;
 
+	static int highScore = 0;
+
 	public static final int WIDTH=1200,HEIGHT=800;
 	public static final int GROUND_HEIGHT=120;
 	public final int PIPE_SPEED=10;
@@ -28,7 +30,9 @@ public class FlappyBird extends JPanel implements ActionListener,MouseListener,K
 
 	public Bird bird;
 
-	public int ticks, score;
+	public String gameOverStr, startStr, scoreStr, highScoreStr;
+
+	public int ticks, score, overTextWidth, startTextWidth, scoreTextWidth, highScoreTextWidth;
 
 	public ArrayList<Pipe> pipes;
 
@@ -37,12 +41,6 @@ public class FlappyBird extends JPanel implements ActionListener,MouseListener,K
 	public boolean gameOver, started;
 
 	boolean playCrash=true;
-
-	final String gameOverStr="Game Over!";
-	final String startStr="Click To Start!";
-	String scoreStr;
-
-	int overTextWidth, startTextWidth, scoreTextWidth;
 
 	public FlappyBird(){
 		started=false;
@@ -61,7 +59,7 @@ public class FlappyBird extends JPanel implements ActionListener,MouseListener,K
 		jframe.setResizable(false);
 		jframe.setVisible(true);
 
-		bird=new Bird(WIDTH/2-Bird.WIDTH/2,HEIGHT/2-Bird.HEIGHT/2,Bird.WIDTH,Bird.HEIGHT);
+		bird=new Bird(WIDTH/2-Bird.WIDTH/2,HEIGHT/2-Bird.HEIGHT/2);
 		pipes=new ArrayList<Pipe>();
 
 		addPipe(true);
@@ -98,7 +96,7 @@ public class FlappyBird extends JPanel implements ActionListener,MouseListener,K
 			bird.move();
 
 			for(Pipe pipe:pipes){
-				if(pipe.getBottomPipe() && bird.x+bird.width/2>pipe.x+pipe.width/2-10 && bird.x+bird.width/2<pipe.x+pipe.width/2+10){
+				if(!gameOver && pipe.getBottomPipe() && bird.x+bird.width/2>pipe.x+pipe.width/2-10 && bird.x+bird.width/2<pipe.x+pipe.width/2+10){
 					score++;
 				}
 				if(pipe.intersects(bird)){
@@ -145,7 +143,7 @@ public class FlappyBird extends JPanel implements ActionListener,MouseListener,K
 	public void jump(){
 		//Restart Game
 		if(gameOver){
-			bird=new Bird(WIDTH/2-Bird.WIDTH/2,HEIGHT/2-Bird.HEIGHT/2,Bird.WIDTH,Bird.HEIGHT);
+			bird=new Bird(WIDTH/2-Bird.WIDTH/2,HEIGHT/2-Bird.HEIGHT/2);
 			playCrash=true;
 			pipes.clear();
 			bird.yMotion=0;
@@ -188,26 +186,38 @@ public class FlappyBird extends JPanel implements ActionListener,MouseListener,K
 		g.setColor(Color.green);
 		g.fillRect(0,HEIGHT-GROUND_HEIGHT,WIDTH,20);
 
-		//Text
-		g.setColor(Color.white);
-		g.setFont(new Font("Arial", 1, 100));
+		// Text
+		gameOverStr = "Game Over!";
+		startStr = "Click To Start!";
+		scoreStr = "Score: " + score;
+		highScoreStr = "HighScore: " + highScore;
 
-		overTextWidth=g.getFontMetrics().stringWidth(gameOverStr);
-		startTextWidth=g.getFontMetrics().stringWidth(startStr);
-
-		if(!started){
-			g.drawString(startStr,WIDTH/2-startTextWidth/2,HEIGHT/2-50);
-		}
-		if(gameOver){
-			g.drawString(gameOverStr,WIDTH/2-overTextWidth/2,HEIGHT/2-50);
+		if (!started) {
+			drawText(g, startStr, 0.75, 0.5, 100,Color.white);
 		}
 
-		g.setFont(new Font(g.getFont().getFontName(), 1, 50));
-		scoreStr="Score: "+score;
-		scoreTextWidth=g.getFontMetrics().stringWidth(scoreStr);
-		if(!gameOver&&started){
-			g.drawString(scoreStr,WIDTH/2-scoreTextWidth/2,100);
+		if (gameOver) {
+			drawText(g, gameOverStr, 0.5, 0.25,100, Color.black);
+			drawText(g, scoreStr, 0.5, 0.5, 50, Color.black);
+
+			// Set the high score
+			if (score > highScore) {
+				highScore = score;
+			}
+			drawText(g, highScoreStr, 0.5, 0.75, 50, Color.black);
 		}
+
+		if (!gameOver && started) {
+			drawText(g, scoreStr, 0.5, 0.933, 50, Color.white);
+		}
+	}
+
+	// Draw text
+	public void drawText(Graphics g, String textStr, double xPosition, double yPosition, int fontSize, Color color) {
+		g.setColor(color);
+		g.setFont(new Font(g.getFont().getFontName(), 1, fontSize));
+		int textWidth = g.getFontMetrics().stringWidth(textStr);
+		g.drawString(textStr, (int) ((WIDTH - textWidth) * xPosition), (int) ((HEIGHT * yPosition)));
 	}
 
 	public static void main(String[] args){

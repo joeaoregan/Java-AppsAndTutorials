@@ -11,42 +11,31 @@ public class Bird extends Rectangle{
 	public static final int WIDTH=28;
 	public static final int HEIGHT=20;
 	Image pic;
-	private boolean alive;
 	public int yMotion;
 
 	Random random=new Random();
 
-	Bird(int a, int b, int w, int h){
+	Bird(int a, int b){
 		yMotion=0;
-		alive=true;
 		x=a;
 		y=b;
-		width=w;
-		height=h;
+		width=WIDTH;
+		height=HEIGHT;
 
 		URL url = getClass().getResource("/flappy.png");
 		pic=Toolkit.getDefaultToolkit().getImage(url);
 	}
 
 	public void move(){
-		y+=yMotion;
-
-		if(y+yMotion>=FlappyBird.HEIGHT-FlappyBird.GROUND_HEIGHT){
-			y=FlappyBird.HEIGHT-FlappyBird.GROUND_HEIGHT-height;
+		// Stop at ground level
+		if (y + yMotion >= FlappyBird.HEIGHT - FlappyBird.GROUND_HEIGHT - height) {
+			y = FlappyBird.HEIGHT - FlappyBird.GROUND_HEIGHT - height;
+		} else {
+			y += yMotion;//jump
 		}
-	}
-
-	public boolean getAlive(){
-		return alive;
-	}
-
-	public void setAlive(boolean alive){
-		this.alive=alive;
 	}
 
 	public void draw(Graphics g, Component c){
-		if(alive){
-			g.drawImage(pic,x,y,width,height,c);
-		}
+		g.drawImage(pic,x,y,width,height,c);
 	}
 }
