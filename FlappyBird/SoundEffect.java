@@ -10,6 +10,9 @@ import java.io.InputStream;
 public class SoundEffect{
 	Clip clip;
 
+	static SoundEffect flapFX = new SoundEffect("/flap.wav");
+	static SoundEffect crashFX = new SoundEffect("/sadwah.wav");
+
 	public SoundEffect(String filename){
 		try{
 			InputStream audioSrc = getClass().getResourceAsStream(filename);
@@ -37,5 +40,13 @@ public class SoundEffect{
 	public void play(){
 		clip.setFramePosition(0);
 		clip.start();
+	}
+
+	public static void flap(){
+		flapFX.play();
+	}
+
+	public void stop(){
+		clip.stop();
 	}
 }

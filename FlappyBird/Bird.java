@@ -35,6 +35,20 @@ public class Bird extends Rectangle{
 		}
 	}
 
+	public void jump(){
+		if(yMotion>0){
+			yMotion=0;
+		}
+		yMotion-=10;
+		SoundEffect.flap();
+	}
+
+	public void fall(){
+		if(yMotion<15){
+			yMotion+=2;
+		}
+	}
+
 	public void draw(Graphics g, Component c){
 		g.drawImage(pic,x,y,width,height,c);
 	}

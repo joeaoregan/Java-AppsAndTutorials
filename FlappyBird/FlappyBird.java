@@ -15,16 +15,14 @@ import java.util.Random;
 
 public class FlappyBird extends JPanel implements ActionListener,MouseListener,KeyListener{
 	private static final long serialVersionUID = 1L;
-	SoundEffect flapFX = new SoundEffect("/flap.wav");
-	SoundEffect crashFX = new SoundEffect("/sadwah.wav");
 
 	public static FlappyBird flappyBird;
 
-	static int highScore = 0;
+	static int highScoreEasy = 0;
+	static int highScoreMedium = 0;
+	static int highScoreHard = 0;
 
-	public static final int WIDTH=1200,HEIGHT=800;
-	public static final int GROUND_HEIGHT=120;
-	public final int PIPE_SPEED=10;
+	public static final int WIDTH=1200,HEIGHT=800,GROUND_HEIGHT=120;
 
 	public Renderer renderer;
 
@@ -32,7 +30,9 @@ public class FlappyBird extends JPanel implements ActionListener,MouseListener,K
 
 	public String gameOverStr, startStr, scoreStr, highScoreStr;
 
-	public int ticks, score, overTextWidth, startTextWidth, scoreTextWidth, highScoreTextWidth;
+	public int ticks, score, overTextWidth, startTextWidth, scoreTextWidth, highScoreTextWidth, difficulty=1;
+
+	int lastTicks;
 
 	public ArrayList<Pipe> pipes;
 
@@ -66,17 +66,23 @@ public class FlappyBird extends JPanel implements ActionListener,MouseListener,K
 	}
 
 	public void init() {
+		lastTicks=0;
+		SoundEffect.crashFX.stop();
 		bird = new Bird(WIDTH / 2 - Bird.WIDTH / 2, HEIGHT / 2 - Bird.HEIGHT / 2);
-
 		gameOver = false;
 		playCrash = true;
+		startPipes();
+	}
+
+ 	public void startPipes(){
 		score = 0;
 
 		pipes.clear();
-		addPipe(true);
-		addPipe(true);
-		addPipe(true);
-		addPipe(true);
+
+		addPipe(difficulty,true);
+		addPipe(difficulty,true);
+		addPipe(difficulty,true);
+		addPipe(difficulty,true);
 	}
 
 	@Override
@@ -89,8 +95,8 @@ public class FlappyBird extends JPanel implements ActionListener,MouseListener,K
 				pipe.move();
 			}
 
-			if(ticks%2==0 && bird.yMotion<15){
-				bird.yMotion+=2;
+			if(ticks%2==0){
+				bird.fall();
 			}
 
 			for(int i=0;i<pipes.size();i++){
@@ -98,7 +104,7 @@ public class FlappyBird extends JPanel implements ActionListener,MouseListener,K
 
 				if(pipe.x + pipe.width < 0){
 					pipes.remove(pipe);
-					addPipe(false);
+					addPipe(difficulty,false);
 				}
 			}
 
@@ -106,13 +112,14 @@ public class FlappyBird extends JPanel implements ActionListener,MouseListener,K
 
 			for(Pipe pipe:pipes){
 				if(!gameOver && pipe.getBottomPipe() && bird.x+bird.width/2>pipe.x+pipe.width/2-10 && bird.x+bird.width/2<pipe.x+pipe.width/2+10){
-					score++;
+					score++;//Increment score for 1 pipe only
 				}
+
 				if(pipe.intersects(bird)){
-					gameOver=true;
+					gameOver=true;//Crash
 
 					if(bird.x<=pipe.x){
-						bird.x=pipe.x-bird.width;
+						bird.x=pipe.x-bird.width;//Bird will not overlap with pipe
 					}else{
 						if(pipe.y!=0){
 							bird.y=pipe.y-bird.height;
@@ -129,41 +136,35 @@ public class FlappyBird extends JPanel implements ActionListener,MouseListener,K
 
 			if(gameOver&&playCrash){
 				playCrash=false;
-				crashFX.play();
+				SoundEffect.crashFX.play();
 			}
+		}
+
+		if(gameOver && lastTicks==0){
+			lastTicks=ticks;
 		}
 
 		renderer.repaint();
 	}
 
-	public void addPipe(boolean start){
+	public void addPipe(int difficultyLevel,boolean start){
 		int startY=100+rand.nextInt(300); //Y position for pipes
 		int distance=(rand.nextInt(7)*25)+150; //Distance between pipes (after first 2)
 
 		if(start){
-			pipes.add(new Pipe(WIDTH+Pipe.WIDTH+pipes.size() * 300,HEIGHT-startY-GROUND_HEIGHT,true)); //bottom
-			pipes.add(new Pipe(WIDTH+Pipe.WIDTH+(pipes.size()-1)*300,-startY,false)); //top
+			pipes.add(new Pipe(WIDTH+Pipe.WIDTH+pipes.size() * 300, HEIGHT -startY -GROUND_HEIGHT +((difficultyLevel==0)?60:(difficultyLevel==1)?0:-70),true)); //bottom
+			pipes.add(new Pipe(WIDTH+Pipe.WIDTH+(pipes.size()-1)*300, -startY,false)); //top
 		} else{
-			pipes.add(new Pipe(pipes.get(pipes.size()-1).x+300+distance,HEIGHT-startY-GROUND_HEIGHT,true)); //bottom
-			pipes.add(new Pipe(pipes.get(pipes.size()-1).x,-startY,false)); // top
+			pipes.add(new Pipe(pipes.get(pipes.size()-1).x+300+distance, HEIGHT-startY -GROUND_HEIGHT+((difficultyLevel==0)?60:(difficultyLevel==1)?0:-70),true)); //bottom
+			pipes.add(new Pipe(pipes.get(pipes.size()-1).x, -startY,false)); // top
 		}
 	}
 
 	public void jump(){
-		//Restart Game
-		if(gameOver){
-			init();
-		}
-
 		if(!started){
 			started=true;
 		} else if(!gameOver){
-			if(bird.yMotion>0){
-				bird.yMotion=0;
-			}
-
-			bird.yMotion-=10;
-			flapFX.play();
+			bird.jump();
 		}
 	}
 
@@ -187,26 +188,39 @@ public class FlappyBird extends JPanel implements ActionListener,MouseListener,K
 		// Text
 		gameOverStr = "Game Over!";
 		startStr = "Click To Start!";
-		scoreStr = "Score: " + score;
-		highScoreStr = "HighScore: " + highScore;
+		scoreStr = "Your Score: " + score;
+		highScoreStr = "HighScores: ";
 
 		if (!started) {
-			drawText(g, startStr, 0.75, 0.5, 100,Color.white);
+			drawText(g, startStr, 0.5, 0.5, 100,Color.white);
 		}
 
 		if (gameOver) {
 			drawText(g, gameOverStr, 0.5, 0.25,100, Color.black);
 			drawText(g, scoreStr, 0.5, 0.5, 50, Color.black);
-
-			// Set the high score
-			if (score > highScore) {
-				highScore = score;
-			}
+			setHighScores();
 			drawText(g, highScoreStr, 0.5, 0.75, 50, Color.black);
+
+			drawText(g, "Easy: " + highScoreEasy, 0.5, 0.775, 25, Color.black);
+			drawText(g, "Medium: " + highScoreMedium, 0.5, 0.8, 25, Color.black);
+			drawText(g, "Hard:" + highScoreHard, 0.5, 0.825, 25, Color.black);
 		}
 
 		if (!gameOver && started) {
 			drawText(g, scoreStr, 0.5, 0.933, 50, Color.white);
+			drawText(g, "Pause: Esc/P", 0.966, 0.933, 50, Color.white);
+		}
+
+		drawText(g, (difficulty==0)?"Easy":(difficulty==1)?"Medium":"Hard", 0.025, 0.933, 50, Color.white);
+	}
+
+	public void setHighScores(){
+		if(difficulty==0){
+			highScoreEasy = (score>highScoreEasy)?score:highScoreEasy; // Set the high score for Easy difficulty
+		}else if(difficulty==1){
+			highScoreMedium = (score>highScoreMedium)?score:highScoreMedium; // Set the high score for Medium difficulty
+		}else if(difficulty==2){
+			highScoreHard = (score>highScoreHard)?score:highScoreHard; // Set the high score for Hard difficulty
 		}
 	}
 
@@ -224,7 +238,7 @@ public class FlappyBird extends JPanel implements ActionListener,MouseListener,K
 
 	@Override
 	public void mouseClicked(MouseEvent e){
-		jump();
+		actionButton();
 	}
 
 	@Override
@@ -248,7 +262,33 @@ public class FlappyBird extends JPanel implements ActionListener,MouseListener,K
 	@Override
 	public void keyReleased(KeyEvent e){
 		if(e.getKeyCode()==KeyEvent.VK_SPACE){
-			jump();
+			actionButton();
+		}
+
+		if((e.getKeyCode()==KeyEvent.VK_ESCAPE || e.getKeyCode()==KeyEvent.VK_P) && !gameOver){
+			started=false;
+		}
+
+		if((e.getKeyCode()==KeyEvent.VK_1 || e.getKeyCode()==KeyEvent.VK_NUMPAD1) && (gameOver || !started)){
+			difficulty=0;
+			startPipes();
+		} else if((e.getKeyCode()==KeyEvent.VK_2 || e.getKeyCode()==KeyEvent.VK_NUMPAD2) && (gameOver || !started)){
+			difficulty=1;
+			startPipes();
+		} else if((e.getKeyCode()==KeyEvent.VK_3 || e.getKeyCode()==KeyEvent.VK_NUMPAD3) && (gameOver || !started)){
+			difficulty=2;
+			startPipes();
+		}
+	}
+
+	public void actionButton(){
+			// System.out.println("ticks: "+ticks+" lastTicks: "+lastTicks);
+		if(gameOver){
+			if(ticks>(lastTicks+50)){ //Delay before restarting
+				init();	//Start or Restart Game
+			}
+		}else{
+			jump(); // Bird Jumps
 		}
 	}
 }
