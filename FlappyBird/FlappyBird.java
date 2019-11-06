@@ -44,7 +44,6 @@ public class FlappyBird extends JPanel implements ActionListener,MouseListener,K
 
 	public FlappyBird(){
 		started=false;
-		score=0;
 		JFrame jframe = new JFrame("Flappy Bird");
 		Timer timer = new Timer(20, this);
 
@@ -59,15 +58,25 @@ public class FlappyBird extends JPanel implements ActionListener,MouseListener,K
 		jframe.setResizable(false);
 		jframe.setVisible(true);
 
-		bird=new Bird(WIDTH/2-Bird.WIDTH/2,HEIGHT/2-Bird.HEIGHT/2);
-		pipes=new ArrayList<Pipe>();
+		pipes = new ArrayList<Pipe>();
 
-		addPipe(true);
-		addPipe(true);
-		addPipe(true);
-		addPipe(true);
+		init();
 
 		timer.start();
+	}
+
+	public void init() {
+		bird = new Bird(WIDTH / 2 - Bird.WIDTH / 2, HEIGHT / 2 - Bird.HEIGHT / 2);
+
+		gameOver = false;
+		playCrash = true;
+		score = 0;
+
+		pipes.clear();
+		addPipe(true);
+		addPipe(true);
+		addPipe(true);
+		addPipe(true);
 	}
 
 	@Override
@@ -143,18 +152,7 @@ public class FlappyBird extends JPanel implements ActionListener,MouseListener,K
 	public void jump(){
 		//Restart Game
 		if(gameOver){
-			bird=new Bird(WIDTH/2-Bird.WIDTH/2,HEIGHT/2-Bird.HEIGHT/2);
-			playCrash=true;
-			pipes.clear();
-			bird.yMotion=0;
-			score=0;
-
-			addPipe(true);
-			addPipe(true);
-			addPipe(true);
-			addPipe(true);
-
-			gameOver=false;
+			init();
 		}
 
 		if(!started){
