@@ -4,18 +4,12 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.net.URL;
-import java.util.Random;
 
 public class Pipe extends Rectangle{
-	/**
-	 *
-	 */
 	private static final long serialVersionUID = 1L;
 	final static int WIDTH=100, HEIGHT=500, SPEED=10;
 	Image pic;
 	private boolean bottomPipe;
-
-	Random random=new Random();
 	URL url;
 
 	Pipe(int a, int b, boolean bottomPipe){

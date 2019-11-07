@@ -16,6 +16,10 @@ import java.util.Random;
 public class FlappyBird extends JPanel implements ActionListener,MouseListener,KeyListener{
 	private static final long serialVersionUID = 1L;
 
+	Cloud cloud1 = new Cloud(); // Same 3 clouds resized and repositioned after moving off screen
+	Cloud cloud2 = new Cloud();
+	Cloud cloud3 = new Cloud();
+
 	public static FlappyBird flappyBird;
 
 	static int highScoreEasy = 0;
@@ -30,9 +34,7 @@ public class FlappyBird extends JPanel implements ActionListener,MouseListener,K
 
 	public String gameOverStr, startStr, scoreStr, highScoreStr;
 
-	public int ticks, score, overTextWidth, startTextWidth, scoreTextWidth, highScoreTextWidth, difficulty=1;
-
-	int lastTicks;
+	public int ticks, lastTicks, score, overTextWidth, startTextWidth, scoreTextWidth, highScoreTextWidth, difficulty=1;
 
 	public ArrayList<Pipe> pipes;
 
@@ -108,6 +110,9 @@ public class FlappyBird extends JPanel implements ActionListener,MouseListener,K
 				}
 			}
 
+			cloud1.move();
+			cloud2.move();
+			cloud3.move();
 			bird.move();
 
 			for(Pipe pipe:pipes){
@@ -172,6 +177,10 @@ public class FlappyBird extends JPanel implements ActionListener,MouseListener,K
 		//Sky
 		g.setColor(Color.cyan);
 		g.fillRect(0,0,WIDTH,HEIGHT);
+
+		cloud1.draw(g,this);
+		cloud2.draw(g,this);
+		cloud3.draw(g,this);
 
 		bird.draw(g, this);
 

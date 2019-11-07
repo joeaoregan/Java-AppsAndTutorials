@@ -4,7 +4,6 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
-import java.util.Random;
 
 public class Bird extends Rectangle{
 	private static final long serialVersionUID = 1L;
@@ -12,8 +11,6 @@ public class Bird extends Rectangle{
 	public static final int HEIGHT=20;
 	Image pic;
 	public int yMotion;
-
-	Random random=new Random();
 
 	Bird(int a, int b){
 		yMotion=0;
