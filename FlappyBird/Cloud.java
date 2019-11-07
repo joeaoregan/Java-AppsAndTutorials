@@ -14,9 +14,9 @@ public class Cloud extends Rectangle{
 	Random random=new Random();
 	URL url;
 
-	int speed;
+	private int speed;
 
-	Cloud(){
+	public Cloud(){
 		speed=(int) (Math.random()*5)+1;
 
 		x=random.nextInt(12) * 100;

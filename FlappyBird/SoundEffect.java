@@ -1,4 +1,3 @@
-
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.AudioInputStream;
@@ -8,7 +7,7 @@ import java.io.File;
 import java.io.InputStream;
 
 public class SoundEffect{
-	Clip clip;
+	private Clip clip;
 
 	static SoundEffect flapFX = new SoundEffect("/flap.wav");
 	static SoundEffect crashFX = new SoundEffect("/sadwah.wav");

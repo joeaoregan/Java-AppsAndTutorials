@@ -8,11 +8,11 @@ import java.net.URL;
 public class Pipe extends Rectangle{
 	private static final long serialVersionUID = 1L;
 	final static int WIDTH=100, HEIGHT=500, SPEED=10;
-	Image pic;
+	private Image pic;
 	private boolean bottomPipe;
 	URL url;
 
-	Pipe(int a, int b, boolean bottomPipe){
+	public Pipe(int a, int b, boolean bottomPipe){
 		this.bottomPipe=bottomPipe;
 		x=a;
 		y=b;

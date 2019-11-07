@@ -9,10 +9,10 @@ public class Bird extends Rectangle{
 	private static final long serialVersionUID = 1L;
 	public static final int WIDTH=28;
 	public static final int HEIGHT=20;
-	Image pic;
-	public int yMotion;
+	private Image pic;
+	private int yMotion;
 
-	Bird(int a, int b){
+	public Bird(int a, int b){
 		yMotion=0;
 		x=a;
 		y=b;

@@ -13,40 +13,35 @@ import javax.swing.Timer;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class FlappyBird extends JPanel implements ActionListener,MouseListener,KeyListener{
+public class FlappyBird extends JPanel implements ActionListener, MouseListener, KeyListener {
 	private static final long serialVersionUID = 1L;
+
+	public static final int WIDTH=1200,HEIGHT=800,GROUND_HEIGHT=120;
+
+	public static FlappyBird flappyBird;
 
 	Cloud cloud1 = new Cloud(); // Same 3 clouds resized and repositioned after moving off screen
 	Cloud cloud2 = new Cloud();
 	Cloud cloud3 = new Cloud();
 
-	public static FlappyBird flappyBird;
+	static int highScoreEasy = 0, highScoreMedium = 0, highScoreHard = 0;
 
-	static int highScoreEasy = 0;
-	static int highScoreMedium = 0;
-	static int highScoreHard = 0;
+	Renderer renderer;
 
-	public static final int WIDTH=1200,HEIGHT=800,GROUND_HEIGHT=120;
+	Bird bird;
 
-	public Renderer renderer;
+	String gameOverStr, startStr, scoreStr, highScoreStr;
 
-	public Bird bird;
+	int ticks, lastTicks, score, overTextWidth, startTextWidth, scoreTextWidth, highScoreTextWidth, difficulty=1;
 
-	public String gameOverStr, startStr, scoreStr, highScoreStr;
+	ArrayList<Pipe> pipes;
 
-	public int ticks, lastTicks, score, overTextWidth, startTextWidth, scoreTextWidth, highScoreTextWidth, difficulty=1;
+	Random rand;
 
-	public ArrayList<Pipe> pipes;
-
-	public Random rand;
-
-	public boolean gameOver, started;
-
-	boolean playCrash=true;
+	boolean gameOver, started, playCrash;
 
 	public FlappyBird(){
-		started=false;
-		JFrame jframe = new JFrame("Flappy Bird");
+		JFrame jframe = new JFrame("Flappy Bird (Joe O'Regan)");
 		Timer timer = new Timer(20, this);
 
 		renderer=new Renderer();
@@ -59,6 +54,8 @@ public class FlappyBird extends JPanel implements ActionListener,MouseListener,K
 		jframe.addKeyListener(this);
 		jframe.setResizable(false);
 		jframe.setVisible(true);
+
+		started = false;
 
 		pipes = new ArrayList<Pipe>();
 
@@ -77,19 +74,34 @@ public class FlappyBird extends JPanel implements ActionListener,MouseListener,K
 	}
 
  	public void startPipes(){
+		ticks=0;
+		lastTicks=0;
 		score = 0;
 
 		pipes.clear();
 
-		addPipe(difficulty,true);
-		addPipe(difficulty,true);
-		addPipe(difficulty,true);
-		addPipe(difficulty,true);
+		addPipe(difficulty, true);
+		addPipe(difficulty, true);
+		addPipe(difficulty, true);
+		addPipe(difficulty, true);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e){
 		ticks++;
+
+		cloud1.move();
+		cloud2.move();
+		cloud3.move();
+
+		if(!started) {
+			if((ticks%33==0||ticks<=1)) {
+				bird.jump();
+			} else if (ticks % 3 == 0) {
+				bird.fall();
+			}
+			bird.move();
+		}
 
 		if(started) {
 			for(int i=0;i<pipes.size();i++){
@@ -110,9 +122,6 @@ public class FlappyBird extends JPanel implements ActionListener,MouseListener,K
 				}
 			}
 
-			cloud1.move();
-			cloud2.move();
-			cloud3.move();
 			bird.move();
 
 			for(Pipe pipe:pipes){
@@ -143,10 +152,10 @@ public class FlappyBird extends JPanel implements ActionListener,MouseListener,K
 				playCrash=false;
 				SoundEffect.crashFX.play();
 			}
-		}
 
-		if(gameOver && lastTicks==0){
-			lastTicks=ticks;
+			if(gameOver && lastTicks==0){
+				lastTicks=ticks;
+			}
 		}
 
 		renderer.repaint();
@@ -182,8 +191,6 @@ public class FlappyBird extends JPanel implements ActionListener,MouseListener,K
 		cloud2.draw(g,this);
 		cloud3.draw(g,this);
 
-		bird.draw(g, this);
-
 		for(Pipe pipe:pipes){
 			pipe.draw(g,this);
 		}
@@ -201,11 +208,17 @@ public class FlappyBird extends JPanel implements ActionListener,MouseListener,K
 		highScoreStr = "HighScores: ";
 
 		if (!started) {
-			drawText(g, startStr, 0.5, 0.5, 100,Color.white);
+			drawText(g, startStr, 0.5, 0.5, 100, Color.white);
 		}
 
+		if (!started || gameOver) {
+			drawText(g, "Difficulty: 1. Easy 2. Medium 3. Hard", 0.9, 0.933, 50, Color.white);
+		}
+
+		bird.draw(g, this);
+
 		if (gameOver) {
-			drawText(g, gameOverStr, 0.5, 0.25,100, Color.black);
+			drawText(g, gameOverStr, 0.5, 0.25, 100, Color.black);
 			drawText(g, scoreStr, 0.5, 0.5, 50, Color.black);
 			setHighScores();
 			drawText(g, highScoreStr, 0.5, 0.75, 50, Color.black);
@@ -291,7 +304,6 @@ public class FlappyBird extends JPanel implements ActionListener,MouseListener,K
 	}
 
 	public void actionButton(){
-			// System.out.println("ticks: "+ticks+" lastTicks: "+lastTicks);
 		if(gameOver){
 			if(ticks>(lastTicks+50)){ //Delay before restarting
 				init();	//Start or Restart Game
