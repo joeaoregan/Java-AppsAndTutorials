@@ -23,6 +23,8 @@ Simple Java Client / Server Apps
 
 ## Connect 5
 
+![Connect 5 Java](https://raw.githubusercontent.com/joeaoregan/Java-AppsAndTutorials/master/Screenshots/Connect5Java.jpg "Connect 5 Java")
+
 Connect 5 in Java
 
 * [Connect 5 Python Console](https://github.com/joeaoregan/Python-GamesAndTutorials/tree/master/Connect5-Console)
